@@ -1,5 +1,6 @@
 import os
 from argparse import ArgumentParser
+from enum import Enum
 from io import BytesIO
 
 import yaml
@@ -34,16 +35,8 @@ keyword_actions = {
 }
 
 
-if __name__ == '__main__':
-    parser = ArgumentParser('Home Automation Kiosk Shell')
-    parser.add_argument('-c', '--config', help='Set path for config.yaml')
-    args = parser.parse_args()
-
-    if args.config is None:
-        # fall back to 'config.yaml' file in application's folder
-        args.config = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.yaml')
-
-    with open(args.config, 'r') as f:
+def execute_configuration(config_file_path: str):
+    with open(config_file_path, 'r') as f:
         config = yaml.full_load(f)
     command = fetch_command_file(config['command_file'])
 
@@ -59,3 +52,26 @@ if __name__ == '__main__':
             keyword_actions[config['fallback']]()
         else:
             os.system(config['fallback'])
+
+
+class CommandArgument(Enum):
+    Execute = 'execute'
+    Install = 'install'
+    Uninstall = 'uninstall'
+    CheckInstalled = 'check-installed'
+
+
+if __name__ == '__main__':
+    parser = ArgumentParser('Home Automation Kiosk Shell')
+    parser.add_argument('-c', '--config', help='Set path for config.yaml')
+    parser.add_argument('command', default=CommandArgument.Execute.value,
+                        choices=[value.value for name, value in CommandArgument.__members__.items()], nargs='?')
+    args = parser.parse_args()
+
+    if args.config is None:
+        # fall back to 'config.yaml' file in application's folder
+        args.config = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.yaml')
+
+    if args.command == CommandArgument.Execute.value:
+        execute_configuration(args.config)
+    # TODO other commands
