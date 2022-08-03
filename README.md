@@ -20,5 +20,4 @@ TBD
 
 ## Future improvements
 
-* console logging
 * setup.py
