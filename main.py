@@ -6,6 +6,8 @@ from io import BytesIO
 import yaml
 from tftpy import TftpClient
 
+import installer
+
 
 class WindowsShutdownCommands:
     @staticmethod
@@ -74,4 +76,14 @@ if __name__ == '__main__':
 
     if args.command == CommandArgument.Execute.value:
         execute_configuration(args.config)
-    # TODO other commands
+    elif args.command == CommandArgument.Install.value:
+        installer.install()
+        print('Installed')
+    elif args.command == CommandArgument.Uninstall.value:
+        installer.uninstall()
+        print('Uninstalled')
+    elif args.command == CommandArgument.CheckInstalled.value:
+        if installer.check_installed():
+            print('Is installed')
+        else:
+            print('NOT installed')
