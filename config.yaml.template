@@ -1,0 +1,10 @@
+# keyword commands: logout, shutdown, reboot
+
+command_file:
+  tftp_host: 192.168.0.1
+  tftp_file: grub_conf
+commands:
+  - contains: gaming-string!  # search string for this operation
+    exec: path-to-my-game-launcher.exe  # path to executable to run if search string found in command file
+    then: shutdown  # what to do after the called executable exited
+fallback: logout  # what to do if none of the defined commands could be run
