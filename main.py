@@ -1,4 +1,5 @@
 import os
+from argparse import ArgumentParser
 from io import BytesIO
 
 import yaml
@@ -34,9 +35,15 @@ keyword_actions = {
 
 
 if __name__ == '__main__':
-    config_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.yaml')
+    parser = ArgumentParser('Home Automation Kiosk Shell')
+    parser.add_argument('-c', '--config', help='Set path for config.yaml')
+    args = parser.parse_args()
 
-    with open(config_file_path, 'r') as f:
+    if args.config is None:
+        # fall back to 'config.yaml' file in application's folder
+        args.config = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.yaml')
+
+    with open(args.config, 'r') as f:
         config = yaml.full_load(f)
     command = fetch_command_file(config['command_file'])
 

@@ -21,5 +21,5 @@ TBD
 ## Future improvements
 
 * console logging
-* argument parser for install and uninstall option
+* ~~argument parser~~ for install and uninstall option
 * setup.py
