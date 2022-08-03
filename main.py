@@ -32,9 +32,6 @@ keyword_actions = {
     'reboot': WindowsShutdownCommands.reboot,
 }
 
-# TODO console logging
-# TODO argument parser for install and uninstall option
-# TODO setup.py
 
 if __name__ == '__main__':
     config_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.yaml')
