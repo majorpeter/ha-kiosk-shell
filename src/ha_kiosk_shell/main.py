@@ -102,7 +102,7 @@ def main():
     if args.command == CommandArgument.Execute.value:
         execute_configuration(args.config)
     elif args.command == CommandArgument.Install.value:
-        installer.install()
+        installer.install(config_path=os.path.abspath(args.config))
         print('Installed')
     elif args.command == CommandArgument.Uninstall.value:
         installer.uninstall()

@@ -6,14 +6,13 @@ __SUBKEY_PATH = 'SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon'
 __VALUE_NAME = 'Shell'
 
 
-def _generate_launch_command() -> str:
-    # TODO add support for args (-c)
-    return sys.argv[0]
+def _generate_launch_command(config_path: str) -> str:
+    return '"' + sys.argv[0] + '" -c "' + config_path + '"'
 
 
-def install():
+def install(config_path: str):
     key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, __SUBKEY_PATH, 0, winreg.KEY_SET_VALUE)
-    winreg.SetValueEx(key, __VALUE_NAME, 0, winreg.REG_SZ, _generate_launch_command())
+    winreg.SetValueEx(key, __VALUE_NAME, 0, winreg.REG_SZ, _generate_launch_command(config_path))
 
 
 def uninstall():
@@ -26,5 +25,5 @@ def check_installed() -> bool:
     try:
         val = winreg.QueryValueEx(key, __VALUE_NAME)[0]
     except FileNotFoundError:
-        val = ''
-    return val == _generate_launch_command()
+        return False
+    return val.startswith('"' + sys.argv[0] + '"')
