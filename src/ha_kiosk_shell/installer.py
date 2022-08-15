@@ -7,8 +7,8 @@ __VALUE_NAME = 'Shell'
 
 
 def _generate_launch_command() -> str:
-    # TODO fixup after setup.py...
-    return sys.executable + ' ' + os.path.join(os.path.dirname(__file__), 'main.py')
+    # TODO add support for args (-c)
+    return sys.argv[0]
 
 
 def install():

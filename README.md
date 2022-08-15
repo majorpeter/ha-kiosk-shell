@@ -18,6 +18,8 @@ TBD
 
 TBD
 
-## Future improvements
+## Possible future improvements
 
-* setup.py
+* multiple commands in parallel or sequence
+* Linux support
+* option to restart with new command (without relogin/PC restart)

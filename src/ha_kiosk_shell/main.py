@@ -7,7 +7,7 @@ from io import BytesIO
 import yaml
 from tftpy import TftpClient
 
-import installer
+from ha_kiosk_shell import installer
 
 
 class WindowsShutdownCommands:
@@ -77,7 +77,7 @@ class CommandArgument(Enum):
     CheckInstalled = 'check-installed'
 
 
-if __name__ == '__main__':
+def main():
     parser = ArgumentParser('Home Automation Kiosk Shell')
     parser.add_argument('-c', '--config', help='Set path for config.yaml')
     parser.add_argument('-v', '--verbose', action='store_true', help='More logs for debugging')
@@ -95,6 +95,10 @@ if __name__ == '__main__':
         # fall back to 'config.yaml' file in application's folder
         args.config = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.yaml')
 
+    if not os.path.exists(args.config):
+        logger.error('Config file does not exist: ' + args.config)
+        return
+
     if args.command == CommandArgument.Execute.value:
         execute_configuration(args.config)
     elif args.command == CommandArgument.Install.value:
@@ -108,3 +112,7 @@ if __name__ == '__main__':
             print('Is installed')
         else:
             print('NOT installed')
+
+
+if __name__ == '__main__':
+    main()
