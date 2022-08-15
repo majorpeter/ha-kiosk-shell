@@ -14,6 +14,7 @@ setup(
     packages=find_packages(where='src'),
     python_requires=">=3.10, <4",
     entry_points={
-        'console_scripts': ['ha_kiosk_shell = ha_kiosk_shell:main']
+        'console_scripts': ['ha-kiosk-shell = ha_kiosk_shell:main'],
+        'gui_scripts': ['ha-kiosk-shell-hidden = ha_kiosk_shell:main']
     }
 )

@@ -1,5 +1,6 @@
 import logging
 import os
+import subprocess
 from argparse import ArgumentParser
 from enum import Enum
 from io import BytesIO
@@ -13,15 +14,15 @@ from ha_kiosk_shell import installer
 class WindowsShutdownCommands:
     @staticmethod
     def logout_user():
-        os.system('shutdown -l')
+        subprocess.call('shutdown -l', creationflags=subprocess.CREATE_NO_WINDOW)
 
     @staticmethod
     def shutdown():
-        os.system('shutdown /s /t 1')
+        subprocess.call('shutdown /s /t 1', creationflags=subprocess.CREATE_NO_WINDOW)
 
     @staticmethod
     def reboot():
-        os.system('shutdown /s /t 1')
+        subprocess.call('shutdown /s /t 1', creationflags=subprocess.CREATE_NO_WINDOW)
 
 
 def fetch_command_file(config):
@@ -52,7 +53,8 @@ def execute_configuration(config_file_path: str):
             logging.info('Found \'{0}\' in command file'.format(c['contains']))
 
             logging.info('Executing \'{0}\'...'.format(c['exec']))
-            os.system(c['exec'])
+
+            subprocess.call(c['exec'], creationflags=subprocess.CREATE_NO_WINDOW)
             logging.info('Execution of \'{0}\' finished'.format(c['exec']))
 
             if 'then' in c:
@@ -67,7 +69,7 @@ def execute_configuration(config_file_path: str):
         if config['fallback'] in keyword_actions:
             keyword_actions[config['fallback']]()
         else:
-            os.system(config['fallback'])
+            subprocess.call(config['fallback'], creationflags=subprocess.CREATE_NO_WINDOW)
 
 
 class CommandArgument(Enum):
